@@ -15,12 +15,12 @@ $(document).ready(function() {
   // T shirt section
   // color option must match the design selected
   // When user selects Theme - JS Puns -> color menu -> Cornfolower Blue, Dark SLate Grey, Gold
-  const $punsColors = $(
+  const $punJs = $(
     '#color option[value= "cornflowerblue"],[value= "darkslategrey"],[value= "gold"]'
   ).hide();
 
   // When user selects I <3 JS theme -> color menu -> Tomoato, Steel Blue, Dim Grey
-  const $heartColors = $(
+  const $heartJs = $(
     '#color option[value= "tomato"],[value= "steelblue"],[value= "dimgrey"]'
   ).hide();
 
@@ -30,12 +30,12 @@ $(document).ready(function() {
     $('#colors-js-puns').show();
     if ($('#design').val() === 'js puns') {
       $('#color option[value= "cornflowerblue"]').prop('selected', true);
-      $($punsColors).show();
-      $($heartColors).hide();
+      $($punJs).show();
+      $($heartJs).hide();
     } else if ($('#design').val() === 'heart js') {
       $('#color option[value= "tomato"]').prop('selected', true);
-      $($heartColors).show();
-      $($punsColors).hide();
+      $($heartJs).show();
+      $($punJs).hide();
     } else {
       $('#colors-js-puns').hide();
     }
@@ -43,11 +43,11 @@ $(document).ready(function() {
 
   // Register for Activiites section
   const $all = $('.activities input[name="all"]').val(200);
-  const $frameWork = $('.activities input[name="js-frameworks"]').val(100);
+  const $framework = $('.activities input[name="js-frameworks"]').val(100);
   const $library = $('.activities input[name="js-libs"]').val(100);
   const $express = $('.activities input[name="express"]').val(100);
   const $node = $('.activities input[name="node"]').val(100);
-  const $buildTools = $('.activities input[name="build-tools"]').val(100);
+  const $build = $('.activities input[name="build-tools"]').val(100);
   const $npm = $('.activities input[name="npm"]').val(100);
   // Calculating activity prices
   const $checkBox = $('input:checkbox');
@@ -64,8 +64,7 @@ $(document).ready(function() {
     $($cost).text('Total Cost: $' + $totalCost);
 
     if ($totalCost === 0) {
-      $('#cost').css('border', '3px solid #F3533D') &&
-        $('#activity-error').show();
+      $('#cost').css('border', '3px solid red') && $('#activity-error').show();
     } else {
       $('#cost').css('border', '3px solid green') &&
         $('#activity-error').hide();
@@ -78,8 +77,8 @@ $(document).ready(function() {
       $($all).prop('disabled', false);
     }
 
-    if ($($frameWork).is(':checked')) {
-      $($frameWork).prop('disabled', false);
+    if ($($framework).is(':checked')) {
+      $($framework).prop('disabled', false);
       $($express).prop('disabled', true);
     } else {
       $($express).prop('disabled', false);
@@ -94,9 +93,9 @@ $(document).ready(function() {
 
     if ($($express).is(':checked')) {
       $($express).prop('disabled', false);
-      $($frameWork).prop('disabled', true);
+      $($framework).prop('disabled', true);
     } else {
-      $($frameWork).prop('disabled', false);
+      $($framework).prop('disabled', false);
     }
 
     if ($($node).is(':checked')) {
@@ -106,8 +105,8 @@ $(document).ready(function() {
       $($library).prop('disabled', false);
     }
 
-    if ($($buildTools).is(':checked')) {
-      $($buildTools).prop('disabled', false);
+    if ($($build).is(':checked')) {
+      $($build).prop('disabled', false);
     }
 
     if ($($npm).is(':checked')) {
@@ -118,14 +117,14 @@ $(document).ready(function() {
   // Payment Info Section
   // Display payment sections based on payment
   const $payment = $('#payment');
-  const $payMethod = $('#payment option[value="select_method"]').remove();
+  const $paymentMethod = $('#payment option[value="select_method"]').remove();
   const $creditCard = $('#payment option[value="credit card"]');
-  const $payPal = $('#payment option[value="paypal"]');
-  const $bitCoin = $('#payment option[value="bitcoin"]');
-  const $payPalText = $('p:first')
+  const $paypal = $('#payment option[value="paypal"]');
+  const $bitcoin = $('#payment option[value="bitcoin"]');
+  const $paypalText = $('p:first')
     .addClass('paypal')
     .text();
-  const $bitCoinText = $('p:last')
+  const $bitcoinText = $('p:last')
     .addClass('bitcoin')
     .text();
 
@@ -139,16 +138,16 @@ $(document).ready(function() {
       $('#credit-card').show();
       $('.paypal').hide();
       $('.bitcoin').hide();
-    } else if ($($payPal).is(':checked')) {
+    } else if ($($paypal).is(':checked')) {
       $('#credit-card').hide();
       $('.paypal').show();
       $('.bitcoin').hide();
-    } else if ($($bitCoin).is(':checked')) {
+    } else if ($($bitcoin).is(':checked')) {
       $('#credit-card').hide();
       $('.paypal').hide();
       $('.bitcoin').show();
-    } else if ($($payMethod).is(':checked')) {
-      $($payMethod).attr('disabled', 'disabled');
+    } else if ($($paymentMethod).is(':checked')) {
+      $($paymentMethod).attr('disabled', 'disabled');
       $('#credit-card').show();
       $('.paypal').show();
       $('.bitcoin').show();
@@ -198,6 +197,140 @@ $(document).ready(function() {
   $('#cvv-error').after($cvvError2);
 
   // Form Validation Messages
+  $('#name-error').hide() &&
+    $('#email-error').hide() &&
+    $('#activity-error').hide() &&
+    $('#credit-error').hide() &&
+    $('#zip-error').hide() &&
+    $('#cvv-error').hide();
+  $('#name-error2').hide() &&
+    $('#email-error2').hide() &&
+    $('#activity-error2').hide() &&
+    $('#credit-error2').hide() &&
+    $('#zip-error2').hide() &&
+    $('#cvv-error2').hide();
 
-  //ending bracket
+  $($name).on('keyup', function() {
+    if (validateName($name.val())) {
+      $($name).css('border', '3px solid green') &&
+        $('#name-error').hide() &&
+        $('#name-error2').hide();
+    } else {
+      $($name).css('border', '3px solid red') &&
+        $('#name-error').show() &&
+        $('#name-error2').hide();
+      return false;
+    }
+  });
+
+  $($email).on('keyup', function() {
+    if (validateEmail($email.val())) {
+      $($email).css('border', '3px solid green') &&
+        $('#email-error').hide() &&
+        $('#email-error2').hide();
+    } else {
+      $($email).css('border', '3px solid red') &&
+        $('#email-error').show() &&
+        $('#email-error2').hide();
+      return false;
+    }
+  });
+
+  $($credit).on('keyup', function() {
+    if (validateCredit($credit.val())) {
+      $($credit).css('border', '3px solid green') &&
+        $('#credit-error').hide() &&
+        $('#credit-error2').hide();
+    } else {
+      $($credit).css('border', '3px solid red') &&
+        $('#credit-error').show() &&
+        $('#credit-error2').hide();
+      return false;
+    }
+  });
+
+  $($zip).on('keyup', function() {
+    if (validateZip($zip.val())) {
+      $($zip).css('border', '3px solid green') &&
+        $('#zip-error').hide() &&
+        $('#zip-error2').hide();
+    } else {
+      $($zip).css('border', '3px solid red') &&
+        $('#zip-error').show() &&
+        $('#zip-error2').hide();
+      return false;
+    }
+  });
+
+  $($cvv).on('keyup', function() {
+    if (validateCvv($cvv.val())) {
+      $($cvv).css('border', '3px solid green') &&
+        $('#cvv-error').hide() &&
+        $('#cvv-error2').hide();
+    } else {
+      $($cvv).css('border', '3px solid red') &&
+        $('#cvv-error').show() &&
+        $('#cvv-error2').hide();
+      return false;
+    }
+  });
+
+  // validation when form is submitted
+
+  $('form').on('submit', function(e) {
+    if ($($name).val() === '') {
+      $($name).css('border', '3px solid red') &&
+        $('#name-error2').show() &&
+        $('#name-error').hide();
+      e.preventDefault();
+    } else {
+      $('#name-error2').hide();
+    }
+
+    if ($($email).val() === '') {
+      $($email).css('border', '3px solid red') &&
+        $('#email-error2').show() &&
+        $('#email-error').hide();
+      e.preventDefault();
+    } else {
+      $('#email-error2').show();
+    }
+
+    if ($totalCost === 0) {
+      $('#cost').css('border', '3px solid red') && $('#activity-error').show();
+      e.preventDefault();
+    } else {
+      $(' #cost').css('border', '3px solid green');
+      $('#activity-error').hide();
+    }
+
+    if ($('.credit-card').is(':visible')) {
+      if ($($credit).val() === '') {
+        $($credit).css('border', '3px solid red') &&
+          $('#credit-error2').show() &&
+          $('#credit-error').hide();
+        e.preventDefault();
+      } else {
+        $('#credit-error2').hide();
+      }
+
+      if ($($zip).val() === '') {
+        $($zip).css('border', '3px solid red') &&
+          $('#zip-error2').show() &&
+          $('#zip-error').hide();
+        e.preventDefault();
+      } else {
+        $('#zip-error2').hide();
+      }
+
+      if ($($cvv).val() === '') {
+        $($cvv).css('border', '3px solid red') &&
+          $('#cvv-error2').show() &&
+          $('#cvv-error').hide();
+        e.preventDefault();
+      } else {
+        $('#cvv-error2').hide();
+      }
+    }
+  });
 });
